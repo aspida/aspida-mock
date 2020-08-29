@@ -21,7 +21,8 @@ export default (
   pathList: string[]
 ) =>
   `/* eslint-disable */
-import { MockClient, MockConfig } from 'aspida-mock'
+import { AspidaClient } from 'aspida'
+import { MockClient, MockConfig, mockClient } from 'aspida-mock'
 ${hasMiddleware ? "import baseMiddleware from './@middleware'\n" : ''}import api from './$api'
 ${pathList
   .map((filePath, i) => `import mock${i} from '.${createImportPath(filePath, inputDir)}'\n`)
@@ -31,10 +32,11 @@ export const mockRoutes = () => [${pathList
     .join(',')}
 ]
 
-export default <U>(client: MockClient<U>, config?: MockConfig) => {${
+export default <U>(client: AspidaClient<U> | MockClient<U>, config?: MockConfig) => {${
     hasMiddleware ? '\n  const middleware = [...baseMiddleware, ...(config?.middleware || [])]' : ''
   }
-  client.attachRoutes(mockRoutes(), ${hasMiddleware ? '{ ...config, middleware }' : 'config'})
+  const mock = 'attachRoutes' in client ? client : mockClient(client)
+  mock.attachRoutes(mockRoutes(), ${hasMiddleware ? '{ ...config, middleware }' : 'config'})
 
-  return api(client)
+  return api(mock)
 }\n`
