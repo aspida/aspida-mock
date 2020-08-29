@@ -1,9 +1,9 @@
-import mockClient from '@aspida/axios/dist/mockClient'
-import { MockRoute, mockMethods, mockMiddleware } from '../src'
+import fetchClient from '@aspida/node-fetch'
+import { MockRoute, mockMethods, mockMiddleware, mockClient } from '../src'
 import api from '../api/$api'
 
 describe('initialize', () => {
-  const adapter = mockClient()
+  const adapter = mockClient(fetchClient())
   const client = api(adapter)
 
   afterEach(() => adapter.detachRoutes())
@@ -27,7 +27,7 @@ describe('initialize', () => {
   test('get path through', async () => {
     adapter.attachRoutes([])
     await expect(
-      client.get({ config: { baseURL: 'https://www.google.com/' } })
+      client.aspida_mock.get({ config: { baseURL: 'https://github.com/aspida' } })
     ).resolves.toHaveProperty('status', 200)
   })
 

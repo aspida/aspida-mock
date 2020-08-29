@@ -42,20 +42,24 @@
 
 ## Usage
 
-### Installation (@aspida/axios only mock compatible)
+### Installation
 
 - Using [npm](https://www.npmjs.com/):
 
   ```sh
-  $ npm install @aspida/axios axios
-  $ npm install aspida-mock --save-dev
+  $ npm install aspida-mock @aspida/axios axios
+  # $ npm install aspida-mock @aspida/fetch
+  # $ npm install aspida-mock @aspida/node-fetch node-fetch
+  # $ npm install aspida-mock @aspida/ky ky
   ```
 
 - Using [Yarn](https://yarnpkg.com/):
 
   ```sh
-  $ yarn add @aspida/axios axios
-  $ yarn add aspida-mock --dev
+  $ yarn add aspida-mock @aspida/axios axios
+  # $ yarn add aspida-mock @aspida/fetch
+  # $ yarn add aspida-mock @aspida/node-fetch node-fetch
+  # $ yarn add aspida-mock @aspida/ky ky
   ```
 
 ### Creating API endpoints
@@ -113,12 +117,13 @@ $ npm run build
 
 <!-- prettier-ignore -->
 ```ts
-import aspidaClient from "@aspida/axios"
-import mockClient from "@aspida/axios/dist/mockClient"
+import aspidaClient from "@aspida/axios" // "@aspida/fetch", "@aspida/node-fetch", "@aspida/ky"
 import api from "./api/$api"
 import mock from "./api/$mock"
 
-const client = process.env.NODE_ENV === "development" ? mock(mockClient()) : api(aspidaClient())
+const client = process.env.NODE_ENV === "development"
+  ? mock(aspidaClient())
+  : api(aspidaClient())
 
 ;(async () => {
   const res = await client.users.post({
@@ -184,10 +189,10 @@ export default mockMethods<Methods>({
 
 <!-- prettier-ignore -->
 ```ts
-import mockClient from "@aspida/axios/dist/mockClient"
+import aspidaClient from "@aspida/axios" // "@aspida/fetch", "@aspida/node-fetch", "@aspida/ky"
 import mock from "./api/$mock"
 
-const client = mock(mockClient())
+const client = mock(aspidaClient())
 
 ;(async () => {
   const res = await client.users.get({
@@ -214,10 +219,10 @@ Simulate response delay.
 
 <!-- prettier-ignore -->
 ```ts
-import mockClient from "@aspida/axios/dist/mockClient"
+import aspidaClient from "@aspida/axios" // "@aspida/fetch", "@aspida/node-fetch", "@aspida/ky"
 import mock from "./api/$mock"
 
-const client = mock(mockClient(), { delayMSec: 500 })
+const client = mock(aspidaClient(), { delayMSec: 500 })
 
 ;(async () => {
   console.time()
@@ -232,10 +237,10 @@ Switch request log output.
 
 <!-- prettier-ignore -->
 ```ts
-import mockClient from "@aspida/axios/dist/mockClient"
+import aspidaClient from "@aspida/axios" // "@aspida/fetch", "@aspida/node-fetch", "@aspida/ky"
 import mock from "./api/$mock"
 
-const client = mock(mockClient(), { log: true })
+const client = mock(aspidaClient(), { log: true })
 
 ;(async () => {
   await client.users.$get({ query: { bar: "baz" }})
