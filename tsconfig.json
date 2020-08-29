@@ -1,8 +1,18 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "downlevelIteration": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "lib": ["esnext", "dom"],
+    "module": "commonjs",
+    "moduleResolution": "node",
     "outDir": "dist",
-    "paths": {}
+    "sourceMap": true,
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "target": "es5"
   },
   "include": ["src/**/*"]
 }
