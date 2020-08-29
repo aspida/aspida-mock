@@ -32,9 +32,7 @@ export const mockRoutes = () => [${pathList
 ]
 
 export default <U>(client: MockClient<U>, config?: MockConfig) => {${
-    hasMiddleware
-      ? '\n  const middleware = [...baseMiddleware, ...(config && config.middleware || [])]'
-      : ''
+    hasMiddleware ? '\n  const middleware = [...baseMiddleware, ...(config?.middleware || [])]' : ''
   }
   client.attachRoutes(mockRoutes(), ${hasMiddleware ? '{ ...config, middleware }' : 'config'})
 

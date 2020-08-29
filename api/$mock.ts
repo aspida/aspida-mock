@@ -23,7 +23,7 @@ export const mockRoutes = () => [
 ]
 
 export default <U>(client: MockClient<U>, config?: MockConfig) => {
-  const middleware = [...baseMiddleware, ...(config && config.middleware || [])]
+  const middleware = [...baseMiddleware, ...(config?.middleware || [])]
   client.attachRoutes(mockRoutes(), { ...config, middleware })
 
   return api(client)

@@ -19,8 +19,9 @@ export default async (
   middleware?: MiddlewareHandler[]
 ) => {
   const route = findHandler(config.path, config.method, routes)
+  const controller = route?.methods[config.method.toLowerCase() as LowerHttpMethod]
 
-  if (!route) return
+  if (!route || !controller) return
 
   let params: MockRequestConfigAndValues = {
     ...config,
@@ -57,7 +58,7 @@ export default async (
     }
   }
 
-  const res = route.methods[config.method.toLowerCase() as LowerHttpMethod]?.(params)
+  const res = controller(params)
 
   return copyData((res instanceof Promise ? await res : res) as MockResponse)
 }
