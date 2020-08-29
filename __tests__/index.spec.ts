@@ -1,5 +1,5 @@
 import mockClient from '@aspida/axios/dist/mockClient'
-import { MockRoute } from '../src'
+import { MockRoute, mockMethods, mockMiddleware } from '../src'
 import api from '../api/$api'
 
 describe('initialize', () => {
@@ -12,7 +12,9 @@ describe('initialize', () => {
     adapter.attachRoutes([
       {
         path: '',
-        methods: { put: ({ query }) => ({ status: 200, resBody: query }) }
+        methods: mockMethods<{ put: { query: { aa: number }; resBody: { aa: number } } }>({
+          put: ({ query }) => ({ status: 200, resBody: query })
+        })
       }
     ])
 
@@ -31,13 +33,17 @@ describe('initialize', () => {
 
   test('response 400 error', async () => {
     const status = 400
-    adapter.attachRoutes([{ path: '', methods: { get: () => ({ status }) } }])
+    adapter.attachRoutes([
+      { path: '', methods: mockMethods<{ get: {} }>({ get: () => ({ status }) }) }
+    ])
     await expect(client.get()).rejects.toHaveProperty('response.status', status)
   })
 
   test('response 500 error', async () => {
     const status = 500
-    adapter.attachRoutes([{ path: '', methods: { get: () => ({ status }) } }])
+    adapter.attachRoutes([
+      { path: '', methods: mockMethods<{ get: {} }>({ get: () => ({ status }) }) }
+    ])
     await expect(client.get()).rejects.toHaveProperty('response.status', status)
   })
 
@@ -49,7 +55,9 @@ describe('initialize', () => {
       [
         {
           path: '',
-          methods: { put: ({ query }) => ({ status: 200, resBody: query }) }
+          methods: mockMethods<{ put: { query: { aa: number }; resBody: { aa: number } } }>({
+            put: ({ query }) => ({ status: 200, resBody: query })
+          })
         }
       ],
       { delayMSec }
@@ -65,9 +73,11 @@ describe('initialize', () => {
     adapter.attachRoutes([
       {
         path: '',
-        methods: {
+        methods: mockMethods<{
+          post: { query: { aa: number }; reqBody: { val: number }; resBody: number }
+        }>({
           post: ({ query, reqBody }) => ({ status: 200, resBody: query.aa * reqBody.val })
-        }
+        })
       }
     ])
 
@@ -80,11 +90,13 @@ describe('initialize', () => {
       [
         {
           path: '',
-          methods: { get: ({ query }) => ({ status: 200, resBody: query }) }
+          methods: mockMethods<{ get: { query: { aa: number }; resBody: { aa: number } } }>({
+            get: ({ query }) => ({ status: 200, resBody: query })
+          })
         }
       ],
       {
-        middleware: [
+        middleware: mockMiddleware([
           (_req, _res, next) => {
             console.log('a')
             next()
@@ -93,7 +105,7 @@ describe('initialize', () => {
             console.log('b')
             next()
           }
-        ]
+        ])
       }
     )
 
@@ -111,11 +123,13 @@ describe('initialize', () => {
       [
         {
           path: '',
-          methods: { put: ({ query }) => ({ status: 200, resBody: query }) }
+          methods: mockMethods<{ put: { query: { aa: number }; resBody: { aa: number } } }>({
+            put: ({ query }) => ({ status: 200, resBody: query })
+          })
         }
       ],
       {
-        middleware: [
+        middleware: mockMiddleware([
           (req, _res, next) => {
             next({ ...req, query: { aa: req.query.aa + 2 } })
           },
@@ -125,7 +139,7 @@ describe('initialize', () => {
           (req, res) => {
             res({ status: 200, resBody: { aa: req.query.aa + 8 } })
           }
-        ]
+        ])
       }
     )
 
@@ -134,7 +148,9 @@ describe('initialize', () => {
 
   test('enable log', async () => {
     const spyLog = jest.spyOn(console, 'log').mockImplementation(x => x)
-    const routes: MockRoute[] = [{ path: '', methods: { get: () => ({ status: 200 }) } }]
+    const routes: MockRoute[] = [
+      { path: '', methods: mockMethods<{ get: {} }>({ get: () => ({ status: 200 }) }) }
+    ]
 
     adapter.attachRoutes(routes, { log: true })
     await client.get()

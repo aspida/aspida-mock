@@ -18,16 +18,16 @@ describe('cli', () => {
   test('snapshot', () => {
     const configs = [
       {
-        input: 'packages/aspida/sample1',
-        resultDirPath: 'packages/aspida/sample1'
+        input: 'api',
+        resultDirPath: 'api'
       },
       {
-        input: './packages/aspida/sample1',
-        resultDirPath: 'packages/aspida/sample1'
+        input: './api',
+        resultDirPath: 'api'
       },
       {
-        input: 'packages/aspida/sample1/',
-        resultDirPath: 'packages/aspida/sample1'
+        input: 'api/',
+        resultDirPath: 'api'
       }
     ]
 
