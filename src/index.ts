@@ -12,22 +12,9 @@ import { createValues } from './utils'
 
 export const mockMethods = <T extends AspidaMethods>(methods: MockMethods<T>) => methods
 
-export const printLog = (config: MockRequestConfig, status: number) => {
-  const searchString = dataToURLString(config.query || {})
-
-  console.log(
-    `[mock] ${config.method}: ${config.path}${searchString ? `?${searchString}` : ''} => ${status}`
-  )
-}
-
 export type MockRoute = {
   path: string
   methods: MockMethods<any>
-}
-
-export type MockClient<U> = AspidaClient<U> & {
-  attachRoutes(routes: MockRoute[], config?: MockConfig): void
-  detachRoutes(): void
 }
 
 export type MockRequestConfig = {
@@ -54,6 +41,19 @@ export type MockConfig = {
   log?: boolean
   delayMSec?: number
   middleware?: MiddlewareHandler[]
+}
+
+export type MockClient<U> = AspidaClient<U> & {
+  attachRoutes(routes: MockRoute[], config?: MockConfig): void
+  detachRoutes(): void
+}
+
+export const printLog = (config: MockRequestConfig, status: number) => {
+  const searchString = dataToURLString(config.query || {})
+
+  console.log(
+    `[mock] ${config.method}: ${config.path}${searchString ? `?${searchString}` : ''} => ${status}`
+  )
 }
 
 export const mockClient = <T>(aspidaClient: AspidaClient<T>): MockClient<T> => {
