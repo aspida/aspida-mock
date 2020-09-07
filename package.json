@@ -83,7 +83,7 @@
     ]
   },
   "devDependencies": {
-    "@aspida/node-fetch": "^0.8.1",
+    "@aspida/node-fetch": "^0.8.3",
     "@types/jest": "^26.0.10",
     "@typescript-eslint/eslint-plugin": "^3.10.1",
     "@typescript-eslint/parser": "^3.10.1",
