@@ -8,7 +8,7 @@
   "bin": "bin/index.js",
   "scripts": {
     "dev": "npm run build && aspida && node bin/index.js",
-    "build": "npm run rimraf && tsc",
+    "build": "npm run rimraf && tsc -p tsconfig.build.json",
     "rimraf": "node -e \"require('fs').rmdirSync('dist', { recursive: true })\"",
     "release": "standard-version --skip.tag",
     "release:major": "npm run release -- --release-as major",

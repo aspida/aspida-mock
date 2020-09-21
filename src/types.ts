@@ -37,33 +37,15 @@ export type PartialResponse = PartiallyPartial<
   'resBody' | 'resHeaders'
 >
 
-export type MockResponse<K extends AspidaMethodParams = { resBody: {}; resHeaders: {} }> =
-  | (K['resBody'] extends {} | null
-      ? K['resHeaders'] extends {}
-        ? BaseResponse<K['resBody'], K['resHeaders'], K['status']>
-        : PartiallyPartial<
-            BaseResponse<
-              K['resBody'],
-              K['resHeaders'] extends {} | undefined ? K['resHeaders'] : undefined,
-              K['status']
-            >,
-            'resHeaders'
-          >
-      : K['resHeaders'] extends {}
-      ? PartiallyPartial<
-          BaseResponse<
-            K['resBody'] extends {} | null | undefined ? K['resBody'] : undefined,
-            K['resHeaders'],
-            K['status']
-          >,
-          'resBody'
-        >
+export type MockResponse<K extends AspidaMethodParams = {}> =
+  | (K extends { resBody: K['resBody']; resHeaders: K['resHeaders'] }
+      ? BaseResponse<K['resBody'], K['resHeaders'], K['status']>
+      : K extends { resBody: K['resBody'] }
+      ? PartiallyPartial<BaseResponse<K['resBody'], K['resHeaders'], K['status']>, 'resHeaders'>
+      : K extends { resHeaders: K['resHeaders'] }
+      ? PartiallyPartial<BaseResponse<K['resBody'], K['resHeaders'], K['status']>, 'resBody'>
       : PartiallyPartial<
-          BaseResponse<
-            K['resBody'] extends {} | null | undefined ? K['resBody'] : undefined,
-            K['resHeaders'] extends {} | undefined ? K['resHeaders'] : undefined,
-            K['status']
-          >,
+          BaseResponse<K['resBody'], K['resHeaders'], K['status']>,
           'resBody' | 'resHeaders'
         >)
   | PartiallyPartial<BaseResponse<any, any, HttpStatusNoOk>, 'resBody' | 'resHeaders'>
