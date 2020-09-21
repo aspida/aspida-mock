@@ -1,6 +1,6 @@
 {
   "name": "aspida-mock",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "TypeScript friendly RESTful API mock for aspida",
   "author": "Solufa <solufa2020@gmail.com>",
   "license": "MIT",
@@ -8,7 +8,7 @@
   "bin": "bin/index.js",
   "scripts": {
     "dev": "npm run build && aspida && node bin/index.js",
-    "build": "npm run rimraf && tsc",
+    "build": "npm run rimraf && tsc -p tsconfig.build.json",
     "rimraf": "node -e \"require('fs').rmdirSync('dist', { recursive: true })\"",
     "release": "standard-version --skip.tag",
     "release:major": "npm run release -- --release-as major",
@@ -83,24 +83,24 @@
     ]
   },
   "devDependencies": {
-    "@aspida/node-fetch": "^0.8.1",
-    "@types/jest": "^26.0.10",
-    "@typescript-eslint/eslint-plugin": "^3.10.1",
-    "@typescript-eslint/parser": "^3.10.1",
-    "eslint": "^7.7.0",
+    "@aspida/node-fetch": "^0.9.0",
+    "@types/jest": "^26.0.14",
+    "@typescript-eslint/eslint-plugin": "^4.1.1",
+    "@typescript-eslint/parser": "^4.1.1",
+    "eslint": "^7.9.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jest": "^23.20.0",
+    "eslint-plugin-jest": "^24.0.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "jest": "^26.4.2",
-    "node-fetch": "^2.6.0",
-    "prettier": "^2.1.1",
+    "node-fetch": "^2.6.1",
+    "prettier": "^2.1.2",
     "standard-version": "^9.0.0",
-    "ts-jest": "^26.3.0",
-    "typescript": "^4.0.2"
+    "ts-jest": "^26.4.0",
+    "typescript": "^4.0.3"
   }
 }
