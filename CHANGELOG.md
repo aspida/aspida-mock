@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.2](https://github.com/aspida/aspida-mock/compare/v0.8.1...v0.8.2) (2020-10-02)
+
+
+### Bug Fixes
+
+* ignore excluded files ([9dd9915](https://github.com/aspida/aspida-mock/commit/9dd991578ebaf12d78967c5fbd8206575fba086b))
+
+
+### Documentation
+
+* update README ([e378784](https://github.com/aspida/aspida-mock/commit/e378784454107084a400ff1d6bc820e02af924ca))
+
 ### [0.8.1](https://github.com/aspida/aspida-mock/compare/v0.8.0...v0.8.1) (2020-09-21)
 
 

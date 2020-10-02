@@ -10,7 +10,11 @@ const listFiles = (targetDir: string) => {
     const target = path.posix.join(targetDir, file)
 
     if (fs.statSync(target).isFile()) {
-      if (/(\n|^)export default/.test(fs.readFileSync(target, 'utf8'))) {
+      const text = fs.readFileSync(target, 'utf8')
+      if (
+        /(\n|^)export default/.test(text) &&
+        /(\n|^)export (interface|type) Methods /.test(text)
+      ) {
         list.push(target)
       }
     } else if (fs.statSync(target).isDirectory()) {

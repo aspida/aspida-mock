@@ -1,6 +1,6 @@
 {
   "name": "aspida-mock",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "TypeScript friendly RESTful API mock for aspida",
   "author": "Solufa <solufa2020@gmail.com>",
   "license": "MIT",
@@ -85,12 +85,12 @@
   "devDependencies": {
     "@aspida/node-fetch": "^0.9.0",
     "@types/jest": "^26.0.14",
-    "@typescript-eslint/eslint-plugin": "^4.1.1",
-    "@typescript-eslint/parser": "^4.1.1",
-    "eslint": "^7.9.0",
-    "eslint-config-prettier": "^6.11.0",
+    "@typescript-eslint/eslint-plugin": "^4.3.0",
+    "@typescript-eslint/parser": "^4.3.0",
+    "eslint": "^7.10.0",
+    "eslint-config-prettier": "^6.12.0",
     "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jest": "^24.0.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.1.4",
@@ -100,7 +100,7 @@
     "node-fetch": "^2.6.1",
     "prettier": "^2.1.2",
     "standard-version": "^9.0.0",
-    "ts-jest": "^26.4.0",
+    "ts-jest": "^26.4.1",
     "typescript": "^4.0.3"
   }
 }
