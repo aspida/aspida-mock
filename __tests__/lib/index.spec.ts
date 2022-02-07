@@ -37,6 +37,7 @@ describe('cli', () => {
       const { text, filePath } = build({
         input: config.input,
         baseURL: '',
+        outputMode: 'all',
         trailingSlash: false,
         outputEachDir: false
       })
