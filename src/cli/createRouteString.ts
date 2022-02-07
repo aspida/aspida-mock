@@ -39,4 +39,4 @@ export default <U>(client: AspidaClient<U> | MockClient<U>, config?: MockConfig)
   mock.attachRoutes(mockRoutes(), ${hasMiddleware ? '{ ...config, middleware }' : 'config'})
 
   return api(mock)
-}\n`
+}\n`.replace(/\n([a-z])/g, '\n// prettier-ignore\n$1')
