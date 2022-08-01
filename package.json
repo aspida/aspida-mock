@@ -94,7 +94,7 @@
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-standard": "^5.0.0",
     "jest": "^27.5.0",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^3.2.10",
     "prettier": "^2.5.1",
     "standard-version": "^9.3.2",
     "ts-jest": "^27.1.3",
