@@ -51,5 +51,7 @@ export type MockResponse<K extends AspidaMethodParams = {}> =
   | PartiallyPartial<BaseResponse<any, any, HttpStatusNoOk>, 'resBody' | 'resHeaders'>
 
 export type MockMethods<T extends AspidaMethods> = {
-  [K in keyof T]?: (req: RequestParams<T[K]>) => MockResponse<T[K]> | Promise<MockResponse<T[K]>>
+  [K in keyof T]?: T[K] extends AspidaMethodParams
+    ? (req: RequestParams<T[K]>) => MockResponse<T[K]> | Promise<MockResponse<T[K]>>
+    : never
 }

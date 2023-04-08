@@ -7,7 +7,7 @@
     "outDir": "dist",
     "sourceMap": true,
     "strict": true,
-    "strictPropertyInitialization": false,
+    "exactOptionalPropertyTypes": true
   },
   "include": ["src/**/*"]
 }
