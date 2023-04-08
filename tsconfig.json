@@ -6,6 +6,8 @@
       "aspida-mock": ["src"]
     },
     "esModuleInterop": true,
+    "strict": true,
+    "exactOptionalPropertyTypes": true,
     "target": "es5"
   }
 }

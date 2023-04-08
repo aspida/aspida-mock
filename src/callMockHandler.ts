@@ -30,15 +30,11 @@ export default async (
 
   if (middleware) {
     for (let i = 0; i < middleware.length; i += 1) {
-      const {
-        isNext,
-        response,
-        config
-      }: {
+      const { isNext, response, config } = await new Promise<{
         isNext: boolean
-        response?: PartialResponse
-        config?: MockRequestConfigAndValues
-      } = await new Promise(resolve => {
+        response?: PartialResponse | undefined
+        config?: MockRequestConfigAndValues | undefined
+      }>(resolve => {
         middleware[i](
           params,
           res => {
