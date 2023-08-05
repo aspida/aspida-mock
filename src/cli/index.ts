@@ -1,8 +1,8 @@
 import minimist from 'minimist'
-import { getConfigs } from 'aspida/dist/commands'
+import { getConfigs } from 'aspida/dist/cjs/commands'
 import build from './buildRouteFile'
-import write from 'aspida/dist/writeRouteFile'
-import watch from 'aspida/dist/watchInputDir'
+import write from 'aspida/dist/cjs/writeRouteFile'
+import watch from 'aspida/dist/cjs/watchInputDir'
 
 export const run = (args: string[]) => {
   const argv = minimist(args, {

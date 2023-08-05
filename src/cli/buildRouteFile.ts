@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { AspidaConfig } from 'aspida/dist/commands'
+import { AspidaConfig } from 'aspida/dist/cjs/commands'
 import listFiles from './listFiles'
 import createRouteString from './createRouteString'
 
