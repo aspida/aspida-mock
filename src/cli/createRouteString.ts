@@ -9,10 +9,10 @@ const createCondition = (
   inputDir: string,
   methods: string,
   trailingSlash: boolean
-) => `
-  { path: '${createImportPath(filePath, inputDir).replace(/(\/index)$/, '') || ''}${
-  trailingSlash ? '/' : ''
-}', methods: ${methods} }`;
+) =>
+  `  { path: '${createImportPath(filePath, inputDir).replace(/(\/index)$/, '') || ''}${
+    trailingSlash ? '/' : ''
+  }', methods: ${methods} },\n`;
 
 export default (
   inputDir: string,
@@ -27,10 +27,10 @@ ${hasMiddleware ? "import baseMiddleware from './@middleware';\n" : ''}import ap
 ${pathList
   .map((filePath, i) => `import mock${i} from '.${createImportPath(filePath, inputDir)}';\n`)
   .join('')}
-export const mockRoutes = () => [${pathList
-    .map((filePath, i) => createCondition(filePath, inputDir, `mock${i}`, trailingSlash))
-    .join(',')},
-];
+export const mockRoutes = () => [
+${pathList
+  .map((filePath, i) => createCondition(filePath, inputDir, `mock${i}`, trailingSlash))
+  .join('')}];
 
 export default <U>(client: AspidaClient<U> | MockClient<U>, config?: MockConfig | undefined) => {${
     hasMiddleware
