@@ -21,7 +21,8 @@ export default (
   pathList: string[]
 ) =>
   `import type { AspidaClient } from 'aspida';
-import { MockClient, MockConfig, mockClient } from 'aspida-mock';
+import type { MockClient, MockConfig } from 'aspida-mock';
+import { mockClient } from 'aspida-mock';
 ${hasMiddleware ? "import baseMiddleware from './@middleware';\n" : ''}import api from './$api';
 ${pathList
   .map((filePath, i) => `import mock${i} from '.${createImportPath(filePath, inputDir)}';\n`)
@@ -31,7 +32,7 @@ export const mockRoutes = () => [${pathList
     .join(',')},
 ];
 
-export default <U>(client: AspidaClient<U> | MockClient<U>, config?: MockConfig) => {${
+export default <U>(client: AspidaClient<U> | MockClient<U>, config?: MockConfig | undefined) => {${
     hasMiddleware
       ? '\n  const middleware = [...baseMiddleware, ...(config?.middleware || [])];'
       : ''

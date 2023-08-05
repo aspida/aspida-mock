@@ -31,20 +31,20 @@ export type MockRequestConfigAndValues = MockRequestConfig & {
 
 export type MiddlewareHandler = (
   req: MockRequestConfigAndValues,
-  res: (res?: PartialResponse) => void,
-  next: (req?: MockRequestConfigAndValues) => void
+  res: (res?: PartialResponse | undefined) => void,
+  next: (req?: MockRequestConfigAndValues | undefined) => void
 ) => void | Promise<void>;
 
 export const mockMiddleware = (middleware: MiddlewareHandler[]) => middleware;
 
 export type MockConfig = {
   log?: boolean;
-  delayMSec?: number;
-  middleware?: MiddlewareHandler[];
+  delayMSec?: number | undefined;
+  middleware?: MiddlewareHandler[] | undefined;
 };
 
 export type MockClient<U> = AspidaClient<U> & {
-  attachRoutes(routes: MockRoute[], config?: MockConfig): void;
+  attachRoutes(routes: MockRoute[], config?: MockConfig | undefined): void;
   detachRoutes(): void;
 };
 
@@ -67,8 +67,8 @@ export const mockClient = <T>(aspidaClient: AspidaClient<T>): MockClient<T> => {
       baseURL: string,
       url: string,
       method: HttpMethod,
-      params?: AspidaParams<T>,
-      type?: RequestType
+      params?: AspidaParams<T> | undefined,
+      type?: RequestType | undefined
     ) {
       if (!hasMockHandler(url, method, mockRoutes)) {
         return aspidaClient.fetch(baseURL, url, method, params, type);
@@ -118,7 +118,7 @@ export const mockClient = <T>(aspidaClient: AspidaClient<T>): MockClient<T> => {
       };
     },
 
-    attachRoutes(routes: MockRoute[], config?: MockConfig) {
+    attachRoutes(routes: MockRoute[], config?: MockConfig | undefined) {
       mockRoutes = routes;
       mockConfig = config;
     },

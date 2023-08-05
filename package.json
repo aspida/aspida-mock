@@ -4,11 +4,19 @@
   "description": "TypeScript friendly RESTful API mock for aspida",
   "author": "Solufa <solufa2020@gmail.com>",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "./dist/cjs/index.js",
   "bin": "bin/index.js",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js",
+      "types": "./dist/esm/index.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
   "scripts": {
     "dev": "npm run build && aspida && node bin/index.js",
-    "build": "rimraf dist && tsc -p tsconfig.build.json",
+    "build": "rimraf dist && tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json",
     "lint": "eslint --ext .js,.ts. && prettier --check \"./**/*.ts\"",
     "lint:fix": "eslint --ext .js,.ts . --fix && prettier --write \"./**/*.ts\"",
     "test": "jest",
@@ -72,6 +80,9 @@
         }
       }
     ]
+  },
+  "peerDependencies": {
+    "aspida": ""
   },
   "devDependencies": {
     "@aspida/node-fetch": "^1.13.3",

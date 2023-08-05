@@ -1,5 +1,6 @@
 import type { AspidaClient } from 'aspida';
-import { MockClient, MockConfig, mockClient } from 'aspida-mock';
+import type { MockClient, MockConfig } from 'aspida-mock';
+import { mockClient } from 'aspida-mock';
 import baseMiddleware from './@middleware';
 import api from './$api';
 import mock0 from './v2.0/index';
@@ -22,7 +23,7 @@ export const mockRoutes = () => [
   { path: '/_sampleId@number.json', methods: mock7 },
 ];
 
-export default <U>(client: AspidaClient<U> | MockClient<U>, config?: MockConfig) => {
+export default <U>(client: AspidaClient<U> | MockClient<U>, config?: MockConfig | undefined) => {
   const middleware = [...baseMiddleware, ...(config?.middleware || [])];
   const mock = 'attachRoutes' in client ? client : mockClient(client);
   mock.attachRoutes(mockRoutes(), { ...config, middleware });
