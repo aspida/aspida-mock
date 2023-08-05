@@ -1,122 +1,122 @@
-import fetchClient from '@aspida/node-fetch'
-import api from '../api/$api'
-import { MockRoute, mockClient, mockMethods, mockMiddleware } from '../src'
+import fetchClient from '@aspida/node-fetch';
+import api from '../api/$api';
+import { MockRoute, mockClient, mockMethods, mockMiddleware } from '../src';
 
 describe('initialize', () => {
-  const adapter = mockClient(fetchClient())
-  const client = api(adapter)
+  const adapter = mockClient(fetchClient());
+  const client = api(adapter);
 
-  afterEach(() => adapter.detachRoutes())
+  afterEach(() => adapter.detachRoutes());
 
   test('enabled mock', async () => {
     adapter.attachRoutes([
       {
         path: '',
         methods: mockMethods<{ put: { query: { aa: number }; resBody: { aa: number } } }>({
-          put: ({ query }) => ({ status: 200, resBody: query })
-        })
-      }
-    ])
+          put: ({ query }) => ({ status: 200, resBody: query }),
+        }),
+      },
+    ]);
 
-    const query = { aa: 1 }
-    const res = await client.$put({ query })
-    expect(res).not.toBe(query)
-    expect(res).toEqual(query)
-  })
+    const query = { aa: 1 };
+    const res = await client.$put({ query });
+    expect(res).not.toBe(query);
+    expect(res).toEqual(query);
+  });
 
   test('get path through', async () => {
-    adapter.attachRoutes([])
+    adapter.attachRoutes([]);
     await expect(
       client.aspida_mock.get({ config: { baseURL: 'https://github.com/aspida' } })
-    ).resolves.toHaveProperty('status', 200)
-  })
+    ).resolves.toHaveProperty('status', 200);
+  });
 
   test('response 400 error', async () => {
-    const status = 400
+    const status = 400;
     adapter.attachRoutes([
-      { path: '', methods: mockMethods<{ get: {} }>({ get: () => ({ status }) }) }
-    ])
-    await expect(client.get()).rejects.toHaveProperty('response.status', status)
-  })
+      { path: '', methods: mockMethods<{ get: {} }>({ get: () => ({ status }) }) },
+    ]);
+    await expect(client.get()).rejects.toHaveProperty('response.status', status);
+  });
 
   test('response 500 error', async () => {
-    const status = 500
+    const status = 500;
     adapter.attachRoutes([
-      { path: '', methods: mockMethods<{ get: {} }>({ get: () => ({ status }) }) }
-    ])
-    await expect(client.get()).rejects.toHaveProperty('response.status', status)
-  })
+      { path: '', methods: mockMethods<{ get: {} }>({ get: () => ({ status }) }) },
+    ]);
+    await expect(client.get()).rejects.toHaveProperty('response.status', status);
+  });
 
   test('set delayTime', async () => {
-    const delayMSec = 500
-    const startTime = Date.now()
+    const delayMSec = 500;
+    const startTime = Date.now();
 
     adapter.attachRoutes(
       [
         {
           path: '',
           methods: mockMethods<{ put: { query: { aa: number }; resBody: { aa: number } } }>({
-            put: ({ query }) => ({ status: 200, resBody: query })
-          })
-        }
+            put: ({ query }) => ({ status: 200, resBody: query }),
+          }),
+        },
       ],
       { delayMSec }
-    )
-    await client.$put({ query: { aa: 1 } })
+    );
+    await client.$put({ query: { aa: 1 } });
 
-    const elapsedTime = Date.now() - startTime
-    expect(elapsedTime).toBeGreaterThanOrEqual(delayMSec - 1)
-    expect(elapsedTime).toBeLessThan(delayMSec + 20)
-  })
+    const elapsedTime = Date.now() - startTime;
+    expect(elapsedTime).toBeGreaterThanOrEqual(delayMSec - 1);
+    expect(elapsedTime).toBeLessThan(delayMSec + 20);
+  });
 
   test('post json data', async () => {
     adapter.attachRoutes([
       {
         path: '',
         methods: mockMethods<{
-          post: { query: { aa: number }; reqBody: { val: number }; resBody: number }
+          post: { query: { aa: number }; reqBody: { val: number }; resBody: number };
         }>({
-          post: ({ query, reqBody }) => ({ status: 200, resBody: query.aa * reqBody.val })
-        })
-      }
-    ])
+          post: ({ query, reqBody }) => ({ status: 200, resBody: query.aa * reqBody.val }),
+        }),
+      },
+    ]);
 
-    expect(await client.$post({ query: { aa: 2 }, body: { val: 3 } })).toEqual(6)
-  })
+    expect(await client.$post({ query: { aa: 2 }, body: { val: 3 } })).toEqual(6);
+  });
 
   test('middleware path through', async () => {
-    const spyLog = jest.spyOn(console, 'log').mockImplementation(x => x)
+    const spyLog = jest.spyOn(console, 'log').mockImplementation(x => x);
     adapter.attachRoutes(
       [
         {
           path: '',
           methods: mockMethods<{ get: { query: { aa: number }; resBody: { aa: number } } }>({
-            get: ({ query }) => ({ status: 200, resBody: query })
-          })
-        }
+            get: ({ query }) => ({ status: 200, resBody: query }),
+          }),
+        },
       ],
       {
         middleware: mockMiddleware([
           (_req, _res, next) => {
-            console.log('a')
-            next()
+            console.log('a');
+            next();
           },
           (_req, _res, next) => {
-            console.log('b')
-            next()
-          }
-        ])
+            console.log('b');
+            next();
+          },
+        ]),
       }
-    )
+    );
 
-    await client.$get()
+    await client.$get();
 
-    expect(console.log).toHaveBeenNthCalledWith(1, 'a')
-    expect(console.log).toHaveBeenNthCalledWith(2, 'b')
+    expect(console.log).toHaveBeenNthCalledWith(1, 'a');
+    expect(console.log).toHaveBeenNthCalledWith(2, 'b');
 
-    spyLog.mockReset()
-    spyLog.mockRestore()
-  })
+    spyLog.mockReset();
+    spyLog.mockRestore();
+  });
 
   test('intercept the response with middleware', async () => {
     adapter.attachRoutes(
@@ -124,46 +124,46 @@ describe('initialize', () => {
         {
           path: '',
           methods: mockMethods<{ put: { query: { aa: number }; resBody: { aa: number } } }>({
-            put: ({ query }) => ({ status: 200, resBody: query })
-          })
-        }
+            put: ({ query }) => ({ status: 200, resBody: query }),
+          }),
+        },
       ],
       {
         middleware: mockMiddleware([
           (req, _res, next) => {
-            next({ ...req, query: { aa: req.query.aa + 2 } })
+            next({ ...req, query: { aa: req.query.aa + 2 } });
           },
           (req, res) => {
-            res({ status: 200, resBody: { aa: req.query.aa + 4 } })
+            res({ status: 200, resBody: { aa: req.query.aa + 4 } });
           },
           (req, res) => {
-            res({ status: 200, resBody: { aa: req.query.aa + 8 } })
-          }
-        ])
+            res({ status: 200, resBody: { aa: req.query.aa + 8 } });
+          },
+        ]),
       }
-    )
+    );
 
-    expect(await client.$put({ query: { aa: 1 } })).toEqual({ aa: 7 })
-  })
+    expect(await client.$put({ query: { aa: 1 } })).toEqual({ aa: 7 });
+  });
 
   test('enable log', async () => {
-    const spyLog = jest.spyOn(console, 'log').mockImplementation(x => x)
+    const spyLog = jest.spyOn(console, 'log').mockImplementation(x => x);
     const routes: MockRoute[] = [
-      { path: '', methods: mockMethods<{ get: {} }>({ get: () => ({ status: 200 }) }) }
-    ]
+      { path: '', methods: mockMethods<{ get: {} }>({ get: () => ({ status: 200 }) }) },
+    ];
 
-    adapter.attachRoutes(routes, { log: true })
-    await client.get()
+    adapter.attachRoutes(routes, { log: true });
+    await client.get();
 
-    expect(console.log).toHaveBeenCalled()
+    expect(console.log).toHaveBeenCalled();
 
-    spyLog.mockReset()
-    adapter.detachRoutes()
-    adapter.attachRoutes(routes)
-    await client.get()
-    expect(console.log).not.toHaveBeenCalled()
+    spyLog.mockReset();
+    adapter.detachRoutes();
+    adapter.attachRoutes(routes);
+    await client.get();
+    expect(console.log).not.toHaveBeenCalled();
 
-    spyLog.mockReset()
-    spyLog.mockRestore()
-  })
-})
+    spyLog.mockReset();
+    spyLog.mockRestore();
+  });
+});

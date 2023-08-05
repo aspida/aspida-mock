@@ -4,61 +4,61 @@ import {
   AspidaParams,
   HttpMethod,
   RequestType,
-  dataToURLString
-} from 'aspida'
-import callMockHandler, { hasMockHandler } from './callMockHandler'
-import { MockMethods, MockResponse, PartialResponse } from './types'
-import { createValues } from './utils'
+  dataToURLString,
+} from 'aspida';
+import callMockHandler, { hasMockHandler } from './callMockHandler';
+import { MockMethods, MockResponse, PartialResponse } from './types';
+import { createValues } from './utils';
 
-export const mockMethods = <T extends AspidaMethods>(methods: MockMethods<T>) => methods
+export const mockMethods = <T extends AspidaMethods>(methods: MockMethods<T>) => methods;
 
 export type MockRoute = {
-  path: string
-  methods: MockMethods<any>
-}
+  path: string;
+  methods: MockMethods<any>;
+};
 
 export type MockRequestConfig = {
-  path: string
-  method: HttpMethod
-  reqBody: any | undefined
-  reqHeaders: any | undefined
-  query: any | undefined
-}
+  path: string;
+  method: HttpMethod;
+  reqBody: any | undefined;
+  reqHeaders: any | undefined;
+  query: any | undefined;
+};
 
 export type MockRequestConfigAndValues = MockRequestConfig & {
-  values: ReturnType<typeof createValues>
-}
+  values: ReturnType<typeof createValues>;
+};
 
 export type MiddlewareHandler = (
   req: MockRequestConfigAndValues,
   res: (res?: PartialResponse) => void,
   next: (req?: MockRequestConfigAndValues) => void
-) => void | Promise<void>
+) => void | Promise<void>;
 
-export const mockMiddleware = (middleware: MiddlewareHandler[]) => middleware
+export const mockMiddleware = (middleware: MiddlewareHandler[]) => middleware;
 
 export type MockConfig = {
-  log?: boolean
-  delayMSec?: number
-  middleware?: MiddlewareHandler[]
-}
+  log?: boolean;
+  delayMSec?: number;
+  middleware?: MiddlewareHandler[];
+};
 
 export type MockClient<U> = AspidaClient<U> & {
-  attachRoutes(routes: MockRoute[], config?: MockConfig): void
-  detachRoutes(): void
-}
+  attachRoutes(routes: MockRoute[], config?: MockConfig): void;
+  detachRoutes(): void;
+};
 
 export const printLog = (config: MockRequestConfig, status: number) => {
-  const searchString = dataToURLString(config.query || {})
+  const searchString = dataToURLString(config.query || {});
 
   console.log(
     `[mock] ${config.method}: ${config.path}${searchString ? `?${searchString}` : ''} => ${status}`
-  )
-}
+  );
+};
 
 export const mockClient = <T>(aspidaClient: AspidaClient<T>): MockClient<T> => {
-  let mockRoutes: MockRoute[] = []
-  let mockConfig: MockConfig | undefined
+  let mockRoutes: MockRoute[] = [];
+  let mockConfig: MockConfig | undefined;
 
   return {
     baseURL: aspidaClient.baseURL,
@@ -71,7 +71,7 @@ export const mockClient = <T>(aspidaClient: AspidaClient<T>): MockClient<T> => {
       type?: RequestType
     ) {
       if (!hasMockHandler(url, method, mockRoutes)) {
-        return aspidaClient.fetch(baseURL, url, method, params, type)
+        return aspidaClient.fetch(baseURL, url, method, params, type);
       }
 
       const send = async () => {
@@ -80,33 +80,33 @@ export const mockClient = <T>(aspidaClient: AspidaClient<T>): MockClient<T> => {
           method,
           query: params?.query,
           reqBody: params?.body,
-          reqHeaders: params?.headers
-        }
+          reqHeaders: params?.headers,
+        };
 
         const result = (await callMockHandler(
           customConfig,
           mockRoutes,
           mockConfig?.middleware
-        )) ?? { status: 404 }
+        )) ?? { status: 404 };
 
-        if (mockConfig?.log) printLog(customConfig, result.status)
+        if (mockConfig?.log) printLog(customConfig, result.status);
 
-        await new Promise(resolve => setTimeout(resolve, mockConfig?.delayMSec))
+        await new Promise(resolve => setTimeout(resolve, mockConfig?.delayMSec));
 
         const res = {
           status: result.status,
           body: result.resBody,
-          headers: result.resHeaders
-        } as any
+          headers: result.resHeaders,
+        } as any;
 
         if (result.status >= 400) {
-          const err = new Error(`Request failed with status code ${result.status}`)
-          ;(err as any).response = res
-          throw err
+          const err = new Error(`Request failed with status code ${result.status}`);
+          (err as any).response = res;
+          throw err;
         }
 
-        return res
-      }
+        return res;
+      };
 
       return {
         send,
@@ -114,20 +114,20 @@ export const mockClient = <T>(aspidaClient: AspidaClient<T>): MockClient<T> => {
         text: send,
         arrayBuffer: send,
         blob: send,
-        formData: send
-      }
+        formData: send,
+      };
     },
 
     attachRoutes(routes: MockRoute[], config?: MockConfig) {
-      mockRoutes = routes
-      mockConfig = config
+      mockRoutes = routes;
+      mockConfig = config;
     },
 
     detachRoutes() {
-      mockRoutes = []
-      mockConfig = undefined
-    }
-  }
-}
+      mockRoutes = [];
+      mockConfig = undefined;
+    },
+  };
+};
 
-export { MockResponse, callMockHandler, hasMockHandler }
+export { MockResponse, callMockHandler, hasMockHandler };

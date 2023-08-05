@@ -1,1 +1,1 @@
-export default () => console.log('excluded!')
+export default () => console.log('excluded!');

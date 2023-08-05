@@ -1,4 +1,4 @@
-import { mockMethods } from 'aspida-mock'
+import { mockMethods } from 'aspida-mock';
 
 // prettier-ignore
 export type Methods = {
@@ -28,5 +28,5 @@ export type Methods = {
 
 export default mockMethods<Methods>({
   get: ({ query }) => (query?.aa ? { status: 200, resBody: { id: query.aa } } : { status: 403 }),
-  delete: ({ query }) => (query.aa ? { status: 204, resBody: { id: 11 } } : { status: 500 })
-})
+  delete: ({ query }) => (query.aa ? { status: 204, resBody: { id: 11 } } : { status: 500 }),
+});

@@ -1,10 +1,10 @@
-import { AspidaMethodParams, AspidaMethods, HttpMethod, HttpStatusOk } from 'aspida'
+import { AspidaMethodParams, AspidaMethods, HttpMethod, HttpStatusOk } from 'aspida';
 
 type RequestParams<T extends AspidaMethodParams> = {
-  path: string
-  method: HttpMethod
-  values: Record<string, string | number>
-} & Pick<T, 'query' | 'reqBody' | 'reqHeaders'>
+  path: string;
+  method: HttpMethod;
+  values: Record<string, string | number>;
+} & Pick<T, 'query' | 'reqBody' | 'reqHeaders'>;
 
 type HttpStatusNoOk =
   | 301
@@ -22,20 +22,20 @@ type HttpStatusNoOk =
   | 502
   | 503
   | 504
-  | 505
+  | 505;
 
-type PartiallyPartial<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
+type PartiallyPartial<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
 type BaseResponse<T, U, V> = {
-  status: V extends number ? V : HttpStatusOk
-  resBody: T
-  resHeaders: U
-}
+  status: V extends number ? V : HttpStatusOk;
+  resBody: T;
+  resHeaders: U;
+};
 
 export type PartialResponse = PartiallyPartial<
   BaseResponse<any, any, HttpStatusOk | HttpStatusNoOk>,
   'resBody' | 'resHeaders'
->
+>;
 
 export type MockResponse<K extends AspidaMethodParams = {}> =
   | (K extends { resBody: K['resBody']; resHeaders: K['resHeaders'] }
@@ -48,10 +48,10 @@ export type MockResponse<K extends AspidaMethodParams = {}> =
           BaseResponse<K['resBody'], K['resHeaders'], K['status']>,
           'resBody' | 'resHeaders'
         >)
-  | PartiallyPartial<BaseResponse<any, any, HttpStatusNoOk>, 'resBody' | 'resHeaders'>
+  | PartiallyPartial<BaseResponse<any, any, HttpStatusNoOk>, 'resBody' | 'resHeaders'>;
 
 export type MockMethods<T extends AspidaMethods> = {
   [K in keyof T]?: T[K] extends AspidaMethodParams
     ? (req: RequestParams<T[K]>) => MockResponse<T[K]> | Promise<MockResponse<T[K]>>
-    : never
-}
+    : never;
+};

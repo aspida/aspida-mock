@@ -2,7 +2,7 @@ const createImportPath = (filePath: string, inputDir: string) =>
   filePath
     .replace(new RegExp(`^(.\\/)?${inputDir.replace(/^.\//, '').replace(/\/$/, '')}`), '')
     .replace(/'/g, "\\'")
-    .replace(/\.ts$/, '')
+    .replace(/\.ts$/, '');
 
 const createCondition = (
   filePath: string,
@@ -12,7 +12,7 @@ const createCondition = (
 ) => `
   { path: '${createImportPath(filePath, inputDir).replace(/(\/index)$/, '') || ''}${
   trailingSlash ? '/' : ''
-}', methods: ${methods} }`
+}', methods: ${methods} }`;
 
 export default (
   inputDir: string,
@@ -20,23 +20,25 @@ export default (
   hasMiddleware: boolean,
   pathList: string[]
 ) =>
-  `/* eslint-disable */
-import { AspidaClient } from 'aspida'
-import { MockClient, MockConfig, mockClient } from 'aspida-mock'
-${hasMiddleware ? "import baseMiddleware from './@middleware'\n" : ''}import api from './$api'
+  `import type { AspidaClient } from 'aspida';
+import { MockClient, MockConfig, mockClient } from 'aspida-mock';
+${hasMiddleware ? "import baseMiddleware from './@middleware';\n" : ''}import api from './$api';
 ${pathList
-  .map((filePath, i) => `import mock${i} from '.${createImportPath(filePath, inputDir)}'\n`)
+  .map((filePath, i) => `import mock${i} from '.${createImportPath(filePath, inputDir)}';\n`)
   .join('')}
 export const mockRoutes = () => [${pathList
     .map((filePath, i) => createCondition(filePath, inputDir, `mock${i}`, trailingSlash))
-    .join(',')}
-]
+    .join(',')},
+];
 
 export default <U>(client: AspidaClient<U> | MockClient<U>, config?: MockConfig) => {${
-    hasMiddleware ? '\n  const middleware = [...baseMiddleware, ...(config?.middleware || [])]' : ''
+    hasMiddleware
+      ? '\n  const middleware = [...baseMiddleware, ...(config?.middleware || [])];'
+      : ''
   }
-  const mock = 'attachRoutes' in client ? client : mockClient(client)
-  mock.attachRoutes(mockRoutes(), ${hasMiddleware ? '{ ...config, middleware }' : 'config'})
+  const mock = 'attachRoutes' in client ? client : mockClient(client);
+  mock.attachRoutes(mockRoutes(), ${hasMiddleware ? '{ ...config, middleware }' : 'config'});
 
-  return api(mock)
-}\n`.replace(/\n([a-z])/g, '\n// prettier-ignore\n$1')
+  return api(mock);
+};
+`;

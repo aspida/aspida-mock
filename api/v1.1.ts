@@ -1,4 +1,4 @@
-import { mockMethods } from 'aspida-mock'
+import { mockMethods } from 'aspida-mock';
 
 // prettier-ignore
 export type Methods = {
@@ -14,5 +14,5 @@ export type Methods = {
 
 export default mockMethods<Methods>({
   // @ts-expect-error
-  get: ({ query }) => (query ? { status: 201, resBody: query } : { status: 403 })
-})
+  get: ({ query }) => (query ? { status: 201, resBody: query } : { status: 403 }),
+});

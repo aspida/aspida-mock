@@ -58,22 +58,21 @@ Export mockMethods in aspida type definition file.
 
 `api/users/index.ts`
 
-<!-- prettier-ignore -->
 ```ts
-import { mockMethods } from "aspida-mock"
+import { mockMethods } from "aspida-mock";
 
 export type Methods = {
   post: {
-    query: { id: number }
-    reqHeaders: { val: string }
-    reqBody: { name: string }
-    resHeaders: { token: string }
+    query: { id: number };
+    reqHeaders: { val: string };
+    reqBody: { name: string };
+    resHeaders: { token: string };
     resBody: {
-      id: number
-      name: string
-    }
-  }
-}
+      id: number;
+      name: string;
+    };
+  };
+};
 
 export default mockMethods<Methods>({
   post: ({ query, reqHeaders, reqBody }) => ({
@@ -81,10 +80,10 @@ export default mockMethods<Methods>({
     resHeaders: { token: reqHeaders.val },
     resBody: {
       id: query.id,
-      name: reqBody.name
-    }
-  })
-})
+      name: reqBody.name,
+    },
+  }),
+});
 ```
 
 `package.json`
@@ -105,24 +104,21 @@ $ npm run build
 
 `index.ts`
 
-<!-- prettier-ignore -->
 ```ts
-import aspidaClient from "@aspida/axios" // "@aspida/fetch", "@aspida/node-fetch", "@aspida/ky"
-import api from "./api/$api"
-import mock from "./api/$mock"
+import aspidaClient from "@aspida/axios"; // "@aspida/fetch", "@aspida/node-fetch", "@aspida/ky"
+import api from "./api/$api";
+import mock from "./api/$mock";
 
-const client = process.env.NODE_ENV === "development"
-  ? mock(aspidaClient())
-  : api(aspidaClient())
+const client = process.env.NODE_ENV === "development" ? mock(aspidaClient()) : api(aspidaClient());
 
-;(async () => {
+(async () => {
   const res = await client.users.post({
     query: { id: 0 },
     headers: { val: "hoge" },
-    data: { name: "fuga" }
-  })
+    data: { name: "fuga" },
+  });
 
-  console.log(res)
+  console.log(res);
   /*
   {
     status: 200,
@@ -130,7 +126,7 @@ const client = process.env.NODE_ENV === "development"
     data: { id: 0, name: "fuga" }
   }
   */
-})()
+})();
 ```
 
 ### Middleware
@@ -140,63 +136,61 @@ For every request, you can insert processing before reaching mockMethods.
 `api/@middleware.ts`
 
 ```ts
-import { mockMiddleware } from "aspida-mock"
+import { mockMiddleware } from "aspida-mock";
 
 export default mockMiddleware([
   (req, _res, next) => {
-    next({ ...req, query: { hoge: req.query.hoge + 1 } })
+    next({ ...req, query: { hoge: req.query.hoge + 1 } });
   },
   (req, res) => {
-    res({ status: 200, resBody: { fuga: req.query.hoge + 2 } })
-  }
-])
+    res({ status: 200, resBody: { fuga: req.query.hoge + 2 } });
+  },
+]);
 ```
 
 `api/users/index.ts`
 
-<!-- prettier-ignore -->
 ```ts
-import { mockMethods } from "aspida-mock"
+import { mockMethods } from "aspida-mock";
 
 export type Methods = {
   get: {
-    query: { hoge: number }
+    query: { hoge: number };
     resBody: {
-      fuga: number
-    }
-  }
-}
+      fuga: number;
+    };
+  };
+};
 
 export default mockMethods<Methods>({
   get: ({ query }) => ({
     status: 200,
-    resBody: { fuga: query.hoge + 4 }
-  })
-})
+    resBody: { fuga: query.hoge + 4 },
+  }),
+});
 ```
 
 `index.ts`
 
-<!-- prettier-ignore -->
 ```ts
-import aspidaClient from "@aspida/axios" // "@aspida/fetch", "@aspida/node-fetch", "@aspida/ky"
-import mock from "./api/$mock"
+import aspidaClient from "@aspida/axios"; // "@aspida/fetch", "@aspida/node-fetch", "@aspida/ky"
+import mock from "./api/$mock";
 
-const client = mock(aspidaClient())
+const client = mock(aspidaClient());
 
-;(async () => {
+(async () => {
   const res = await client.users.get({
-    query: { hoge: 0 }
-  })
+    query: { hoge: 0 },
+  });
 
-  console.log(res)
+  console.log(res);
   /*
   {
     status: 200,
     data: { fuga: 3 }
   }
   */
-})()
+})();
 ```
 
 ### Options
@@ -207,35 +201,33 @@ aspida-mock has several options available.
 
 Simulate response delay.
 
-<!-- prettier-ignore -->
 ```ts
-import aspidaClient from "@aspida/axios" // "@aspida/fetch", "@aspida/node-fetch", "@aspida/ky"
-import mock from "./api/$mock"
+import aspidaClient from "@aspida/axios"; // "@aspida/fetch", "@aspida/node-fetch", "@aspida/ky"
+import mock from "./api/$mock";
 
-const client = mock(aspidaClient(), { delayMSec: 500 })
+const client = mock(aspidaClient(), { delayMSec: 500 });
 
-;(async () => {
-  console.time()
-  await client.users.$get()
-  console.timeEnd() // default: 506.590ms
-})()
+(async () => {
+  console.time();
+  await client.users.$get();
+  console.timeEnd(); // default: 506.590ms
+})();
 ```
 
 #### `log: boolean`
 
 Switch request log output.
 
-<!-- prettier-ignore -->
 ```ts
-import aspidaClient from "@aspida/axios" // "@aspida/fetch", "@aspida/node-fetch", "@aspida/ky"
-import mock from "./api/$mock"
+import aspidaClient from "@aspida/axios"; // "@aspida/fetch", "@aspida/node-fetch", "@aspida/ky"
+import mock from "./api/$mock";
 
-const client = mock(aspidaClient(), { log: true })
+const client = mock(aspidaClient(), { log: true });
 
-;(async () => {
-  await client.users.$get({ query: { bar: "baz" }})
+(async () => {
+  await client.users.$get({ query: { bar: "baz" } });
   // [mock] get: /users?bar=baz => 200
-})()
+})();
 ```
 
 ### Cautions
