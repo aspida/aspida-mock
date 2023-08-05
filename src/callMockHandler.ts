@@ -1,7 +1,7 @@
-import { LowerHttpMethod, HttpMethod } from 'aspida'
-import { MockRequestConfig, MockRequestConfigAndValues, MockRoute, MiddlewareHandler } from './'
+import { HttpMethod, LowerHttpMethod } from 'aspida'
+import { MiddlewareHandler, MockRequestConfig, MockRequestConfigAndValues, MockRoute } from './'
 import { MockResponse, PartialResponse } from './types'
-import { createPathRegExp, copyData, createValues } from './utils'
+import { copyData, createPathRegExp, createValues } from './utils'
 
 const findHandler = (path: string, method: HttpMethod, routes: MockRoute[]) =>
   routes.find(

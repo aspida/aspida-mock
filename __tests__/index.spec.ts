@@ -1,6 +1,6 @@
 import fetchClient from '@aspida/node-fetch'
-import { MockRoute, mockMethods, mockMiddleware, mockClient } from '../src'
 import api from '../api/$api'
+import { MockRoute, mockClient, mockMethods, mockMiddleware } from '../src'
 
 describe('initialize', () => {
   const adapter = mockClient(fetchClient())

@@ -1,6 +1,6 @@
 import { HttpMethod } from 'aspida'
+import { MockRequestConfigAndValues, printLog } from '../src/'
 import { createValues } from '../src/utils'
-import { printLog, MockRequestConfigAndValues } from '../src/'
 
 describe('unit tests', () => {
   test('createValues', () => {

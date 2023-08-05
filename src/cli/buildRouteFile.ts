@@ -1,8 +1,8 @@
+import { AspidaConfig } from 'aspida/dist/cjs/commands'
 import fs from 'fs'
 import path from 'path'
-import { AspidaConfig } from 'aspida/dist/cjs/commands'
-import listFiles from './listFiles'
 import createRouteString from './createRouteString'
+import listFiles from './listFiles'
 
 const hasMiddleware = (input: string) =>
   fs.existsSync(path.join(input, '@middleware')) ||

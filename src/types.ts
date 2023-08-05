@@ -1,4 +1,4 @@
-import { HttpMethod, HttpStatusOk, AspidaMethods, AspidaMethodParams } from 'aspida'
+import { AspidaMethodParams, AspidaMethods, HttpMethod, HttpStatusOk } from 'aspida'
 
 type RequestParams<T extends AspidaMethodParams> = {
   path: string

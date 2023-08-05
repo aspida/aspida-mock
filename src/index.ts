@@ -1,13 +1,13 @@
 import {
   AspidaClient,
   AspidaMethods,
-  HttpMethod,
-  dataToURLString,
   AspidaParams,
-  RequestType
+  HttpMethod,
+  RequestType,
+  dataToURLString
 } from 'aspida'
-import { MockMethods, MockResponse, PartialResponse } from './types'
 import callMockHandler, { hasMockHandler } from './callMockHandler'
+import { MockMethods, MockResponse, PartialResponse } from './types'
 import { createValues } from './utils'
 
 export const mockMethods = <T extends AspidaMethods>(methods: MockMethods<T>) => methods
